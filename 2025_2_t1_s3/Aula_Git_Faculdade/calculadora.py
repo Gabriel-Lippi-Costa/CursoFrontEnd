@@ -1,3 +1,3 @@
-def soma(a, b):
+def somar(a, b):
     return a + b
 
