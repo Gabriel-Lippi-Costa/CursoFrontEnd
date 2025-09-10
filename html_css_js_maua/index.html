@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Estatística</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Calculadora de Estatística</h1>
+
+  <label>Digite valores separados por vírgula:</label><br>
+  <input id="inputValores" type="text" placeholder="Ex: 2, 4, 6, 8"><br><br>
+  <button onclick="calcular()">Calcular</button>
+
+  <h2>Resultados:</h2>
+  <pre id="resultado"></pre>
+
+  <canvas id="grafico" width="400" height="200"></canvas>
+
+  <script>
+    async function calcular() {
+      let valoresTexto = document.getElementById("inputValores").value;
+      let valores = valoresTexto.split(",").map(v => parseFloat(v.trim()));
+
+      const resposta = await fetch("http://127.0.0.1:5000/estatistica", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({valores})
+      });
+
+      const resultado = await resposta.json();
+      document.getElementById("resultado").textContent = JSON.stringify(resultado, null, 2);
+
+      // Plotar gráfico
+      const ctx = document.getElementById("grafico").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Média", "Variância", "Desvio Padrão"],
+          datasets: [{
+            label: "Resultados Estatísticos",
+            data: [resultado.media, resultado.variancia, resultado.desvio_padrao]
+          }]
+        }
+      });
+    }
+  </script>
+</body>
+</html>
