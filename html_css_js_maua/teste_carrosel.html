@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Carrossel Responsivo - Rokuzen (exemplo)</title>
+  <style>
+    :root{
+      --bg: #0f1720;
+      --card: #ffffff;
+      --accent: #A8BE7C;
+      --muted: #6b7280;
+      --gap: 16px;
+      --radius: 12px;
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: linear-gradient(180deg,#f6f7f9 0%, #eef1ef 100%); color:#111; padding:30px}
+
+    .wrap{max-width:1200px;margin:0 auto}
+    h1{font-size:20px;margin-bottom:14px;color:#213029}
+    p.lead{color:var(--muted);margin-bottom:22px}
+
+    /* ---------- Carousel ---------- */
+    .carousel{
+      position:relative;
+      background:transparent;
+      border-radius:var(--radius);
+      padding:12px;
+    }
+
+    .viewport{
+      overflow:hidden;
+      border-radius:10px;
+      background:transparent;
+    }
+
+    .track{
+      display:flex;
+      gap:var(--gap);
+      transition:transform 450ms cubic-bezier(.22,.9,.2,1);
+      will-change:transform;
+      padding:8px;
+      touch-action: pan-y;
+    }
+
+    .slide{
+      flex:0 0 100%; /* mobile: 1 por view */
+      display:flex;
+      align-items:stretch;
+      background:var(--card);
+      border-radius:10px;
+      box-shadow:0 6px 20px rgba(20,25,30,0.06);
+      overflow:hidden;
+      min-height:260px;
+      position:relative;
+    }
+
+    .media{flex:0 0 45%;min-width:120px;background:#ddd}
+    .media img{display:block;width:100%;height:100%;object-fit:cover}
+
+    .content{flex:1;padding:18px;display:flex;flex-direction:column;justify-content:space-between}
+    .badge{font-size:12px;padding:6px 10px;border-radius:999px;background:var(--accent);color:#05321a;display:inline-block;font-weight:700}
+
+    .title{font-size:18px;margin:8px 0 6px}
+    .desc{color:var(--muted);font-size:14px;margin-bottom:12px}
+    .price{font-weight:800;font-size:20px;color:#0b3b2a}
+
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
+    .btn-primary{background:var(--accent);color:#04210f}
+    .btn-ghost{background:transparent;border:1px solid #e6e6e6}
+
+    /* controls */
+    .nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:999px;border:none;background:rgba(0,0,0,0.45);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .nav-btn:focus{outline:3px solid rgba(168,190,124,0.25)}
+    .nav-prev{left:10px}
+    .nav-next{right:10px}
+
+    .dots{display:flex;gap:8px;justify-content:center;margin-top:12px}
+    .dot{width:10px;height:10px;border-radius:50%;background:#cfcfcf;cursor:pointer}
+    .dot.active{background:var(--accent)}
+
+    /* responsive: show more slides per view */
+    @media(min-width:640px){
+      .slide{flex:0 0 calc(50% - var(--gap)/2)}
+    }
+    @media(min-width:992px){
+      .slide{flex:0 0 calc(33.333% - (var(--gap) * 2 / 3))}
+    }
+
+    /* small polish */
+    .slide .content .top{display:flex;justify-content:space-between;align-items:center}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Carrossel responsivo — produtos e preços</h1>
+    <p class="lead">Exemplo de carrossel responsivo, acessível, com botões, indicadores e espaço para textos dos preços.</p>
+
+    <div class="carousel" id="carousel">
+      <button class="nav-btn nav-prev" aria-label="Anterior" id="prev">❮</button>
+      <div class="viewport">
+        <div class="track" id="track">
+          <!-- Slides: duplique/edite conforme necessário -->
+
+          <article class="slide" data-id="1">
+            <div class="media"><img src="https://picsum.photos/800/600?random=11" alt="Massagem costas"></div>
+            <div class="content">
+              <div>
+                <div class="top"><span class="badge">Promo</span><span class="desc">30min</span></div>
+                <h3 class="title">Massagem Costas</h3>
+                <p class="desc">Alívio de tensão muscular com técnica relaxante. Sessão curta e eficiente.</p>
+              </div>
+              <div class="actions">
+                <div class="price">R$ 100,00</div>
+                <div style="margin-left:auto"><button class="btn btn-primary">Agendar</button></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="slide" data-id="2">
+            <div class="media"><img src="https://picsum.photos/800/600?random=22" alt="Massagem rosto"></div>
+            <div class="content">
+              <div>
+                <div class="top"><span class="badge">Novo</span><span class="desc">45min</span></div>
+                <h3 class="title">Massagem Rosto</h3>
+                <p class="desc">Drenagem facial e relaxamento localizado para rejuvenescer a pele.</p>
+              </div>
+              <div class="actions">
+                <div class="price">R$ 120,00</div>
+                <div style="margin-left:auto"><button class="btn btn-primary">Agendar</button></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="slide" data-id="3">
+            <div class="media"><img src="https://picsum.photos/800/600?random=33" alt="Massagem panturrilha"></div>
+            <div class="content">
+              <div>
+                <div class="top"><span class="badge">Oferta</span><span class="desc">20min</span></div>
+                <h3 class="title">Massagem Panturrilha</h3>
+                <p class="desc">Técnica para aliviar fadiga e melhorar circulação nas pernas.</p>
+              </div>
+              <div class="actions">
+                <div class="price">R$ 80,00</div>
+                <div style="margin-left:auto"><button class="btn btn-primary">Agendar</button></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="slide" data-id="4">
+            <div class="media"><img src="https://picsum.photos/800/600?random=44" alt="Massagem relaxante"></div>
+            <div class="content">
+              <div>
+                <div class="top"><span class="badge">Top</span><span class="desc">60min</span></div>
+                <h3 class="title">Massagem Relaxante</h3>
+                <p class="desc">Sessão completa para relaxamento profundo e bem-estar.</p>
+              </div>
+              <div class="actions">
+                <div class="price">R$ 150,00</div>
+                <div style="margin-left:auto"><button class="btn btn-primary">Agendar</button></div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+      <button class="nav-btn nav-next" aria-label="Próximo" id="next">❯</button>
+
+      <div class="dots" id="dots" aria-hidden="false"></div>
+    </div>
+
+  </div>
+
+  <script>
+    /* Carousel JS: controla próximo/anterior, dots, autoplay, responsividade e swipe */
+    (function(){
+      const carousel = document.getElementById('carousel');
+      const track = document.getElementById('track');
+      const slides = Array.from(track.children);
+      const prevBtn = document.getElementById('prev');
+      const nextBtn = document.getElementById('next');
+      const dotsWrap = document.getElementById('dots');
+
+      let index = 0;
+      let autoplay = true;
+      let intervalTime = 3500;
+      let timer = null;
+
+      // cria dots conforme número de slides
+      function buildDots(){
+        dotsWrap.innerHTML = '';
+        for(let i=0;i<slides.length;i++){
+          const d = document.createElement('button');
+          d.className = 'dot';
+          d.setAttribute('aria-label', 'Ir para slide '+(i+1));
+          d.addEventListener('click', ()=>{goTo(i);resetAutoplay()});
+          dotsWrap.appendChild(d);
+        }
+        updateDots();
+      }
+
+      // atualiza classe active
+      function updateDots(){
+        const dots = Array.from(dotsWrap.children);
+        dots.forEach((d, i)=> d.classList.toggle('active', i===index));
+      }
+
+      // calcula largura e move track
+      function updatePosition(){
+        const viewportWidth = carousel.querySelector('.viewport').clientWidth;
+        // largura da primeira slide (flex-basis)
+        const slideWidth = slides[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap || 0);
+        // calcular transform X: mover por index * (largura do slide)
+        const x = -index * (slideWidth);
+        track.style.transform = `translateX(${x}px)`;
+        updateDots();
+      }
+
+      function clamp(v, min, max){return Math.max(min, Math.min(max, v));}
+
+      function goTo(i){
+        index = clamp(i, 0, slides.length-1);
+        updatePosition();
+      }
+
+      prevBtn.addEventListener('click', ()=>{goTo(index-1);resetAutoplay()});
+      nextBtn.addEventListener('click', ()=>{goTo(index+1);resetAutoplay()});
+
+      // autoplay
+      function startAutoplay(){
+        if(!autoplay) return;
+        stopAutoplay();
+        timer = setInterval(()=>{
+          index = (index+1) % slides.length;
+          updatePosition();
+        }, intervalTime);
+      }
+      function stopAutoplay(){ if(timer) { clearInterval(timer); timer = null }}
+      function resetAutoplay(){ stopAutoplay(); startAutoplay(); }
+
+      // pause on hover/focus
+      carousel.addEventListener('mouseenter', ()=>{stopAutoplay()});
+      carousel.addEventListener('mouseleave', ()=>{startAutoplay()});
+      carousel.addEventListener('focusin', ()=>{stopAutoplay()});
+      carousel.addEventListener('focusout', ()=>{startAutoplay()});
+
+      // touch swipe
+      let startX = 0; let deltaX = 0; let isTouch = false;
+      track.addEventListener('touchstart', (e)=>{isTouch=true;startX = e.touches[0].clientX;stopAutoplay()}, {passive:true});
+      track.addEventListener('touchmove', (e)=>{ if(!isTouch) return; deltaX = e.touches[0].clientX - startX; }, {passive:true});
+      track.addEventListener('touchend', ()=>{
+        isTouch=false;
+        if(Math.abs(deltaX) > 40){ if(deltaX<0) index = Math.min(index+1, slides.length-1); else index = Math.max(index-1,0); }
+        deltaX = 0; updatePosition(); startAutoplay();
+      });
+
+      // keyboard
+      carousel.addEventListener('keydown', (e)=>{
+        if(e.key === 'ArrowRight') { goTo(index+1); resetAutoplay(); }
+        if(e.key === 'ArrowLeft') { goTo(index-1); resetAutoplay(); }
+      });
+
+      // atualizar em resize
+      let resizeTO = null;
+      window.addEventListener('resize', ()=>{ clearTimeout(resizeTO); resizeTO = setTimeout(updatePosition,120)});
+
+      // inicialização
+      buildDots();
+      // colocar roles/atributos para acessibilidade
+      carousel.setAttribute('tabindex','0');
+      track.setAttribute('aria-live','polite');
+      updatePosition();
+      startAutoplay();
+
+      // expose for debug
+      window._carousel = {goTo, startAutoplay, stopAutoplay};
+
+    })();
+  </script>
+</body>
+</html>
