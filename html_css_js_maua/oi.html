@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Escolha de Duração</title>
+<style>
+  body {
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    padding: 2rem;
+    background: #f7f8fb;
+    color: #111;
+  }
+
+  .group-title {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .duration-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .duration-group input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    user-select: none;
+    transition: transform 0.08s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+    box-shadow: 0 1px 0 rgba(16, 24, 40, 0.02), 0 1px 4px rgba(16, 24, 40, 0.03);
+    min-width: 72px;
+    text-align: center;
+  }
+
+  .chip:active {
+    transform: translateY(1px);
+  }
+
+  .duration-group input[type="radio"]:checked + .chip {
+    background: #0f62fe;
+    color: white;
+    border-color: rgba(15, 98, 254, 0.9);
+    box-shadow: 0 6px 18px rgba(15, 98, 254, 0.12);
+  }
+
+  .duration-group input[type="radio"]:focus + .chip {
+    outline: 3px solid rgba(15, 98, 254, 0.18);
+    outline-offset: 3px;
+  }
+
+  .help {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #444;
+  }
+
+  @media (max-width: 420px) {
+    .duration-group {
+      gap: 0.45rem;
+    }
+
+    .chip {
+      min-width: 64px;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.95rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <label class="group-title">Escolha a duração da massagem</label>
+
+  <div class="duration-group">
+    <input type="radio" id="dur30" name="duracao" value="30" checked>
+    <label class="chip" for="dur30">30 min</label>
+
+    <input type="radio" id="dur45" name="duracao" value="45">
+    <label class="chip" for="dur45">45 min</label>
+
+    <input type="radio" id="dur60" name="duracao" value="60">
+    <label class="chip" for="dur60">60 min</label>
+
+    <input type="radio" id="dur90" name="duracao" value="90">
+    <label class="chip" for="dur90">90 min</label>
+  </div>
+
+  <div class="help" id="selecionadoTxt">Selecionado: <strong>30 min</strong></div>
+
+<script>
+  const radios = document.querySelectorAll('.duration-group input[type="radio"]');
+  const live = document.getElementById('selecionadoTxt');
+
+  function updateLabel() {
+    const selected = document.querySelector('.duration-group input[type="radio"]:checked');
+    if (selected) {
+      live.innerHTML = `Selecionado: <strong>${selected.value} min</strong>`;
+    }
+  }
+
+  radios.forEach(r => r.addEventListener('change', updateLabel));
+</script>
+
+</body>
+</html>
